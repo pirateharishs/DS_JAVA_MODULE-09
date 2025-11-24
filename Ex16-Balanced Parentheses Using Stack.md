@@ -1,55 +1,78 @@
-# Ex17 Reversing a String Using Stack Data Structure
-## DATE: 01/10/25
+# Ex16 Check for Balanced Parentheses Using Stack
+## DATE: 26/09/25
 ## AIM:
-To write a Java program that reverses an input string using a stack, without using built-in reverse functions.
+To write a Java program that verifies whether the parentheses (brackets) in an input string are balanced — meaning each opening bracket (, {, [ has a corresponding and correctly ordered closing bracket ), }, ].
 
 ## Algorithm
 1. Start the program.
-2. Create an empty stack of characters.
-3. Traverse each character ch in the input string.
-4. Create an empty StringBuilder named reversed.
-5. While the stack is not empty.
-6. Convert reversed to a string and return it.
-7. Read the string input from the user.
-8. Call and store the returned result in reversed.
-9. Print the reversed string.
-10. End the program.   
+2. Stack Initialization.
+3. Read the input string.
+4. Create a stack st of size expr.length().
+5. Repeat for each character in the string.
+6. Opening Parentheses.
+7.  Closing Parentheses.
+8.  After Processing All Characters, if the stack is empty return true.
+9.  If stack is not empty return false.
+10.  Print the result.
+11.  End the program.   
 
 ## Program:
 ```
 /*
-Program to reverses an input string using a stack
+Program to verify whether the parentheses (brackets) in an input string are balanced
 Developed by: HARISH S
 Register Number: 212223230071
 */
 
 import java.util.Scanner;
-import java.util.Stack;
 
-public class ReverseStringWithStack {
+class ArrayStack {
+    private char[] stack;
+    private int top;
 
-    public static String reverseString(String input) {
-        Stack<Character> stack = new Stack<>();
-        for (char ch : input.toCharArray()) {
-            stack.push(ch);
+    public ArrayStack(int size) {
+        stack = new char[size];
+        top = -1;
+    }
+
+    public void push(char ch) {
+        stack[++top] = ch;
+    }
+
+    public char pop() {
+        return stack[top--];
+    }
+
+    public boolean isEmpty() {
+        return top == -1;
+    }
+}
+
+public class ParenChecker {
+    public static boolean isBalanced(String expr) {
+        ArrayStack st = new ArrayStack(expr.length());
+        for (char ch : expr.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[') {
+                st.push(ch);
+            } else if (ch == ')' || ch == '}' || ch == ']') {
+                if (st.isEmpty()) return false;
+                char top = st.pop();
+                if ((ch == ')' && top != '(') ||
+                    (ch == '}' && top != '{') ||
+                    (ch == ']' && top != '[')) {
+                    return false;
+                }
+            }
         }
-        StringBuilder reversed = new StringBuilder();
-        while (!stack.isEmpty()) {
-            reversed.append(stack.pop());
-        }
-
-        return reversed.toString();
+        return st.isEmpty();
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        String reversed = reverseString(input);
-
-        // Display result
-        System.out.println(reversed);
-
-        scanner.close();
+        Scanner sc = new Scanner(System.in);
+        String expr = sc.nextLine();
+        boolean ok = isBalanced(expr);
+        System.out.println(ok);
+        sc.close();
     }
 }
 
@@ -57,8 +80,8 @@ public class ReverseStringWithStack {
 
 ## Output:
 
-<img width="467" height="339" alt="image" src="https://github.com/user-attachments/assets/72f8e832-0d20-4766-b7c1-580040bb803e" />
+<img width="443" height="361" alt="image" src="https://github.com/user-attachments/assets/d8a974a9-2caa-46b2-8f1c-5854a59bf1b2" />
 
 
 ## Result:
-Thus, the program successfully reverses the given string using a stack without relying on built-in reverse functions.
+Thus,the program correctly checks whether an input string has balanced parentheses using a stack.
